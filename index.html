@@ -239,6 +239,9 @@
             font-family: monospace;
             font-size: 0.85rem;
             border: 2px solid #e0e0e0;
+            color: #333;
+            max-height: 150px;
+            overflow-y: auto;
         }
 
         .copy-btn {
@@ -392,7 +395,7 @@
         });
 
         // Form submission
-        document.getElementById('clientForm').addEventListener('submit', async function(e) {
+        document.getElementById('clientForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
             const submitBtn = document.getElementById('submitBtn');
@@ -411,21 +414,7 @@
                 timestamp: new Date().toISOString()
             };
 
-            // Generate the agreement URL with actual client data
-            generatedUrl = generateAgreementUrlWithData(pendingClientData);
-
-            // Show success message with URL (webhook not sent yet)
-            showSuccessMessage(generatedUrl);
-
-            // Reset form
-            document.getElementById('clientForm').reset();
-            charCount.textContent = '0';
-
-            submitBtn.textContent = originalText;
-            submitBtn.disabled = false;
-        });
-
-        function generateAgreementUrl() {
+            // Build URL with actual client data (URL encoded automatically)
             const params = new URLSearchParams({
                 client_name: pendingClientData.clientName,
                 client_email: pendingClientData.clientEmail,
@@ -434,24 +423,37 @@
                 client_postcode: pendingClientData.clientPostcode
             });
 
-            return `${BASE_AGREEMENT_URL}?${params.toString()}`;
-        }
+            generatedUrl = BASE_AGREEMENT_URL + '?' + params.toString();
+
+            // Show success message with the generated URL
+            showSuccessMessage(generatedUrl);
+
+            // Reset form
+            document.getElementById('clientForm').reset();
+            charCount.textContent = '0';
+
+            // Reset button
+            submitBtn.textContent = originalText;
+            submitBtn.disabled = false;
+        });
 
         function showSuccessMessage(url) {
             const overlay = document.getElementById('overlay');
             const successMessage = document.getElementById('successMessage');
             const urlDisplay = document.getElementById('urlDisplay');
 
+            // Display the URL in the popup
             urlDisplay.textContent = url;
+            
             overlay.classList.add('show');
             successMessage.classList.add('show');
 
-            // View Contract button functionality (opens URL in new tab)
+            // View Contract button - opens the URL with client data in new tab
             document.getElementById('viewContractBtn').onclick = function() {
                 window.open(url, '_blank');
             };
 
-            // Send button functionality (sends data to webhook)
+            // Send button - sends data to Make.com webhook
             document.getElementById('sendBtn').onclick = async function() {
                 const sendBtn = this;
                 const originalText = sendBtn.textContent;
@@ -459,7 +461,6 @@
                 sendBtn.disabled = true;
 
                 try {
-                    // Send client information to Make.com webhook
                     const response = await fetch(WEBHOOK_URL, {
                         method: 'POST',
                         headers: {
@@ -472,7 +473,7 @@
                         throw new Error('Failed to send client data to webhook');
                     }
 
-                    console.log('Client data successfully sent to Make.com webhook:', pendingClientData);
+                    console.log('Client data successfully sent to Make.com webhook');
 
                     sendBtn.textContent = 'Sent! ✓';
                     setTimeout(() => {
