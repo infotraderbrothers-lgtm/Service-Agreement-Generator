@@ -427,11 +427,11 @@
 
         function generateAgreementUrl() {
             const params = new URLSearchParams({
-                client_name: '{{clientName}}',
-                client_email: '{{clientEmail}}',
-                client_phone: '{{clientPhone}}',
-                client_address: '{{clientAddress}}',
-                client_postcode: '{{clientPostcode}}'
+                client_name: pendingClientData.clientName,
+                client_email: pendingClientData.clientEmail,
+                client_phone: pendingClientData.clientPhone,
+                client_address: pendingClientData.clientAddress,
+                client_postcode: pendingClientData.clientPostcode
             });
 
             return `${BASE_AGREEMENT_URL}?${params.toString()}`;
