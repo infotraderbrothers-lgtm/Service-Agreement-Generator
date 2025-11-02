@@ -411,8 +411,8 @@
                 timestamp: new Date().toISOString()
             };
 
-            // Generate the agreement URL with placeholders
-            generatedUrl = generateAgreementUrl();
+            // Generate the agreement URL with actual client data
+            generatedUrl = generateAgreementUrlWithData(pendingClientData);
 
             // Show success message with URL (webhook not sent yet)
             showSuccessMessage(generatedUrl);
