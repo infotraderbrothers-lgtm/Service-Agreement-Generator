@@ -101,6 +101,7 @@
         input[type="text"],
         input[type="email"],
         input[type="tel"],
+        input[type="date"],
         textarea {
             width: 100%;
             padding: 12px 15px;
@@ -110,6 +111,80 @@
             font-family: inherit;
             transition: all 0.3s ease;
             background: white;
+        }
+
+        input[type="date"] {
+            cursor: pointer;
+            position: relative;
+            color: #2d2d2d;
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23bc9c22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            background-color: rgba(188, 156, 34, 0.1);
+        }
+
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            background-color: rgba(188, 156, 34, 0.2);
+            transform: scale(1.05);
+        }
+
+        /* Modern calendar dropdown styling */
+        input[type="date"]::-webkit-datetime-edit {
+            padding: 0;
+        }
+
+        input[type="date"]::-webkit-datetime-edit-fields-wrapper {
+            padding: 0;
+        }
+
+        input[type="date"]::-webkit-datetime-edit-text {
+            color: #2d2d2d;
+            padding: 0 2px;
+        }
+
+        input[type="date"]::-webkit-datetime-edit-month-field,
+        input[type="date"]::-webkit-datetime-edit-day-field,
+        input[type="date"]::-webkit-datetime-edit-year-field {
+            color: #2d2d2d;
+            font-weight: 600;
+        }
+
+        input[type="date"]::-webkit-datetime-edit-month-field:focus,
+        input[type="date"]::-webkit-datetime-edit-day-field:focus,
+        input[type="date"]::-webkit-datetime-edit-year-field:focus {
+            background: rgba(188, 156, 34, 0.1);
+            color: #bc9c22;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        /* Style for the calendar popup - using a wrapper approach */
+        .date-input-wrapper {
+            position: relative;
+        }
+
+        .date-input-wrapper input[type="date"] {
+            filter: brightness(1);
+        }
+
+        /* Custom calendar styles using CSS variables */
+        input[type="date"] {
+            color-scheme: light;
+        }
+
+        @supports (accent-color: #bc9c22) {
+            input[type="date"] {
+                accent-color: #bc9c22;
+            }
         }
 
         input:focus,
@@ -353,6 +428,20 @@
                 </div>
 
                 <div class="form-section">
+                    <h2 class="section-title">Project Start Date</h2>
+
+                    <div class="form-group">
+                        <label for="start_date">Estimated Start Date <span class="required">*</span></label>
+                        <div class="date-input-wrapper">
+                            <input type="date" id="start_date" name="start_date" required>
+                        </div>
+                        <p style="font-size: 0.85rem; color: #666; margin-top: 8px; font-style: italic;">
+                            If unsure, please just pick an estimate but be sure to change the actual date inside of the project management.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-section">
                     <h2 class="section-title">Work Details</h2>
 
                     <div class="form-group">
@@ -419,6 +508,7 @@
                 clientPhone: document.getElementById('client_phone').value.trim(),
                 clientAddress: document.getElementById('client_address').value.trim(),
                 clientPostcode: document.getElementById('client_postcode').value.trim(),
+                startDate: document.getElementById('start_date').value,
                 workDetails: document.getElementById('work_details').value.trim(),
                 personalMessage: document.getElementById('personal_message').value.trim(),
                 timestamp: new Date().toISOString()
