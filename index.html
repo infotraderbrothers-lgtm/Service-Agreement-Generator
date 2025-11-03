@@ -353,6 +353,15 @@
                 </div>
 
                 <div class="form-section">
+                    <h2 class="section-title">Work Details</h2>
+
+                    <div class="form-group">
+                        <label for="work_details">Brief Description of Work <span class="required">*</span></label>
+                        <input type="text" id="work_details" name="work_details" required placeholder="e.g., New kitchen installation, Flooring repair, Bespoke wardrobe">
+                    </div>
+                </div>
+
+                <div class="form-section">
                     <h2 class="section-title">Personal Message (Optional)</h2>
 
                     <div class="form-group">
@@ -410,6 +419,7 @@
                 clientPhone: document.getElementById('client_phone').value.trim(),
                 clientAddress: document.getElementById('client_address').value.trim(),
                 clientPostcode: document.getElementById('client_postcode').value.trim(),
+                workDetails: document.getElementById('work_details').value.trim(),
                 personalMessage: document.getElementById('personal_message').value.trim(),
                 timestamp: new Date().toISOString()
             };
