@@ -102,6 +102,7 @@
         input[type="email"],
         input[type="tel"],
         input[type="date"],
+        select,
         textarea {
             width: 100%;
             padding: 12px 15px;
@@ -188,10 +189,25 @@
         }
 
         input:focus,
+        select:focus,
         textarea:focus {
             outline: none;
             border-color: #bc9c22;
             box-shadow: 0 0 10px rgba(188, 156, 34, 0.2);
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23bc9c22" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+
+        select option {
+            padding: 10px;
         }
 
         textarea {
@@ -428,6 +444,20 @@
                 </div>
 
                 <div class="form-section">
+                    <h2 class="section-title">Lead Source</h2>
+
+                    <div class="form-group">
+                        <label for="lead_source">How did the client find us? <span class="required">*</span></label>
+                        <select id="lead_source" name="lead_source" required>
+                            <option value="" disabled selected>Select an option...</option>
+                            <option value="Checkatrade">Checkatrade</option>
+                            <option value="Cold campaign">Cold campaign</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section">
                     <h2 class="section-title">Project Start Date</h2>
 
                     <div class="form-group">
@@ -513,6 +543,7 @@
                 clientPhone: document.getElementById('client_phone').value.trim(),
                 clientAddress: document.getElementById('client_address').value.trim(),
                 clientPostcode: document.getElementById('client_postcode').value.trim(),
+                leadSource: document.getElementById('lead_source').value,
                 startDate: document.getElementById('start_date').value,
                 projectTitle: document.getElementById('project_title').value.trim(),
                 projectDetails: document.getElementById('project_details').value.trim(),
