@@ -465,13 +465,59 @@
                     <h2 class="section-title">Work Details</h2>
 
                     <div class="form-group">
-                        <label for="project_title">Project Title <span class="required">*</span></label>
-                        <input type="text" id="project_title" name="project_title" required placeholder="e.g., Plastering, Kitchen Installation, Bathroom Renovation">
+                        <label for="project_type">Project Type <span class="required">*</span></label>
+                        <select id="project_type" name="project_type" required>
+                            <option value="" disabled selected>Select project type...</option>
+                            <option value="Kitchen Installation">Kitchen Installation</option>
+                            <option value="Bathroom Renovation">Bathroom Renovation</option>
+                            <option value="Plastering">Plastering</option>
+                            <option value="Flooring">Flooring</option>
+                            <option value="Carpentry">Carpentry</option>
+                            <option value="Decking">Decking</option>
+                            <option value="Painting & Decorating">Painting & Decorating</option>
+                            <option value="Electrical Work">Electrical Work</option>
+                            <option value="Plumbing">Plumbing</option>
+                            <option value="General Renovation">General Renovation</option>
+                            <option value="Other">Other</option>
+                        </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="project_details">Project Details <span class="required">*</span></label>
-                        <textarea id="project_details" name="project_details" required placeholder="e.g., Client wants a new kitchen installed using Vinyl flooring over a space of 15m squared. Old kitchen needs to be removed, and some patch work on the walls needs to be added." style="min-height: 100px;"></textarea>
+                        <label for="work_location">Where will the work be done? <span class="required">*</span></label>
+                        <input type="text" id="work_location" name="work_location" required placeholder="e.g., Kitchen, Master Bathroom, Entire Ground Floor">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="work_description">What needs to be done? <span class="required">*</span></label>
+                        <textarea id="work_description" name="work_description" required placeholder="e.g., Remove old kitchen units and install new ones, replaster walls and ceiling, install laminate flooring throughout" maxlength="300" style="min-height: 100px;"></textarea>
+                        <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Maximum 300 characters</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="materials_responsibility">Materials & Supply Responsibility <span class="required">*</span></label>
+                        <select id="materials_responsibility" name="materials_responsibility" required>
+                            <option value="" disabled selected>Select an option...</option>
+                            <option value="Trader Brothers Providing All Materials">Trader Brothers Providing All Materials</option>
+                            <option value="Client Providing Some/All Materials">Client Providing Some/All Materials</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="client_materials_group" style="display: none;">
+                        <label for="client_materials_list">Which materials will the client provide? <span class="required">*</span></label>
+                        <textarea id="client_materials_list" name="client_materials_list" placeholder="e.g., Light fixtures, tiles, paint colors, cabinet handles" maxlength="250" style="min-height: 80px;"></textarea>
+                        <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Maximum 250 characters</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="special_requirements">Any special requirements or concerns? (Optional)</label>
+                        <input type="text" id="special_requirements" name="special_requirements" placeholder="e.g., Must match existing woodwork, eco-friendly materials preferred, work around pets" maxlength="150">
+                        <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Maximum 150 characters</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="not_included">What's NOT Included (Optional)</label>
+                        <textarea id="not_included" name="not_included" placeholder="e.g., Painting/decorating, disposal of old materials, repairs to adjacent areas, permits/inspections" maxlength="300" style="min-height: 80px;"></textarea>
+                        <p style="font-size: 0.85rem; color: #666; margin-top: 5px;">Maximum 300 characters</p>
                     </div>
                 </div>
 
@@ -512,6 +558,21 @@
         let pendingClientData = null;
         let generatedUrl = null;
 
+        // Show/hide client materials field based on materials responsibility selection
+        document.getElementById('materials_responsibility').addEventListener('change', function() {
+            const clientMaterialsGroup = document.getElementById('client_materials_group');
+            const clientMaterialsList = document.getElementById('client_materials_list');
+            
+            if (this.value === 'Client Providing Some/All Materials') {
+                clientMaterialsGroup.style.display = 'block';
+                clientMaterialsList.required = true;
+            } else {
+                clientMaterialsGroup.style.display = 'none';
+                clientMaterialsList.required = false;
+                clientMaterialsList.value = '';
+            }
+        });
+
         // Form submission
         document.getElementById('clientForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -530,8 +591,13 @@
                 clientPostcode: document.getElementById('client_postcode').value.trim(),
                 leadSource: document.getElementById('lead_source').value,
                 startDate: document.getElementById('start_date').value,
-                projectTitle: document.getElementById('project_title').value.trim(),
-                projectDetails: document.getElementById('project_details').value.trim(),
+                projectType: document.getElementById('project_type').value,
+                workLocation: document.getElementById('work_location').value.trim(),
+                workDescription: document.getElementById('work_description').value.trim(),
+                materialsResponsibility: document.getElementById('materials_responsibility').value,
+                clientMaterialsList: document.getElementById('client_materials_list').value.trim(),
+                specialRequirements: document.getElementById('special_requirements').value.trim(),
+                notIncluded: document.getElementById('not_included').value.trim(),
                 personalMessage: document.getElementById('personal_message').value,
                 timestamp: new Date().toISOString()
             };
