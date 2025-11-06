@@ -213,13 +213,6 @@
             line-height: 1.6;
         }
 
-        .char-count {
-            text-align: right;
-            font-size: 0.85rem;
-            color: #999;
-            margin-top: 5px;
-        }
-
         .btn-container {
             text-align: center;
             margin-top: 35px;
@@ -483,12 +476,15 @@
                 </div>
 
                 <div class="form-section">
-                    <h2 class="section-title">Personal Message (Optional)</h2>
+                    <h2 class="section-title">Personal Message</h2>
 
                     <div class="form-group">
-                        <label for="personal_message">Add a personal message for the client</label>
-                        <textarea id="personal_message" name="personal_message" placeholder="e.g., Thank you for choosing Trader Brothers for your kitchen renovation project. We're excited to work with you and bring your vision to life..." maxlength="500"></textarea>
-                        <div class="char-count"><span id="charCount">0</span>/500 characters</div>
+                        <label for="personal_message">Include a personal message for the client? <span class="required">*</span></label>
+                        <select id="personal_message" name="personal_message" required>
+                            <option value="" disabled selected>Select an option...</option>
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
                     </div>
                 </div>
 
@@ -516,14 +512,6 @@
         let pendingClientData = null;
         let generatedUrl = null;
 
-        // Character counter
-        const messageField = document.getElementById('personal_message');
-        const charCount = document.getElementById('charCount');
-
-        messageField.addEventListener('input', function() {
-            charCount.textContent = this.value.length;
-        });
-
         // Form submission
         document.getElementById('clientForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -544,7 +532,7 @@
                 startDate: document.getElementById('start_date').value,
                 projectTitle: document.getElementById('project_title').value.trim(),
                 projectDetails: document.getElementById('project_details').value.trim(),
-                personalMessage: document.getElementById('personal_message').value.trim(),
+                personalMessage: document.getElementById('personal_message').value,
                 timestamp: new Date().toISOString()
             };
 
@@ -564,7 +552,6 @@
 
             // Reset form
             document.getElementById('clientForm').reset();
-            charCount.textContent = '0';
 
             // Reset button
             submitBtn.textContent = originalText;
